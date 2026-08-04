@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WiFi Zone OS — Mon parcours</title>
+<meta name="description" content="Toutes mes formations WiFi Zone, Starlink et MikroTik dans une seule application.">
+<meta name="theme-color" content="#10151F">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#10151F;
+  --night-2:#161D2B;
+  --surface:#1A2130;
+  --line:#2A3446;
+  --paper:#EDE9E1;
+  --paper-2:#DFDAD0;
+  --ink:#1B1B1B;
+  --ink-soft:#5E5A52;
+  --amber:#FFB020;
+  --teal:#2FB79A;
+  --stamp:#C4442F;
+  --dim:#8C97AB;
+  --r:14px;
+  --nav-h:64px;
+  --disp:"Space Grotesk",'Segoe UI',system-ui,sans-serif;
+  --body:"Karla",system-ui,-apple-system,sans-serif;
+  --mono:"Space Mono",ui-monospace,"Courier New",monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--night);
+  color:var(--paper);
+  font-family:var(--body);
+  font-size:16px;line-height:1.5;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 84% -6%, rgba(255,176,32,.13), transparent 46%),
+    radial-gradient(circle at 4% 22%, rgba(47,183,154,.09), transparent 42%);
+}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 16px}
+
+/* ---------- header ---------- */
+.top{
+  position:sticky;top:0;z-index:30;
+  background:rgba(16,21,31,.93);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.top-in{max-width:620px;margin:0 auto;padding:12px 16px 10px;display:flex;align-items:center;gap:12px}
+.mark{
+  width:34px;height:34px;border-radius:9px;flex:none;
+  background:var(--paper);color:var(--ink);
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:15px;
+}
+.brand{flex:1;min-width:0}
+.brand b{
+  display:block;font-family:var(--disp);font-weight:700;font-size:16px;
+  letter-spacing:.2px;line-height:1.15
+}
+.brand span{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:1.4px;
+  color:var(--dim);text-transform:uppercase;margin-top:2px
+}
+.sigbars{display:flex;align-items:flex-end;gap:3px;height:24px}
+.sigbars i{width:5px;border-radius:2px;background:var(--line);transition:background .3s}
+.sigbars i:nth-child(1){height:8px}.sigbars i:nth-child(2){height:13px}
+.sigbars i:nth-child(3){height:18px}.sigbars i:nth-child(4){height:24px}
+.sigbars i.on{background:var(--amber)}
+
+/* ---------- hero ticket ---------- */
+.hero{margin:18px 0 4px}
+.stub{
+  position:relative;background:var(--paper);color:var(--ink);
+  border-radius:var(--r);padding:18px 18px 16px;
+  box-shadow:0 14px 34px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.5) inset;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.022) 0 1px,transparent 1px 3px);
+  animation:rise .5s cubic-bezier(.2,.7,.3,1) backwards
+}
+.stub::before,.stub::after{
+  content:"";position:absolute;width:22px;height:22px;border-radius:50%;
+  background:var(--night);top:calc(100% - 62px)
+}
+.stub::before{left:-11px}
+.stub::after{right:-11px}
+.stub-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--ink-soft)
+}
+.stub h1{
+  font-family:var(--disp);font-weight:700;font-size:25px;line-height:1.08;
+  margin:8px 0 0;letter-spacing:-.4px
+}
+.count{
+  font-family:var(--disp);font-weight:700;font-size:34px;line-height:1;
+  text-align:right;white-space:nowrap
+}
+.count small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1.2px;color:var(--ink-soft);margin-top:5px;font-weight:400}
+.meter{height:7px;background:var(--paper-2);border-radius:99px;margin:16px 0 12px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--amber);border-radius:99px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.tear{border-top:2px dashed #C9C3B8;margin:0 -18px;padding:14px 18px 0}
+.tear-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.code{font-family:var(--mono);font-size:11px;letter-spacing:1.6px;color:var(--ink-soft)}
+.stamp{
+  font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:1.6px;
+  color:var(--stamp);border:2px solid var(--stamp);border-radius:5px;
+  padding:3px 8px;transform:rotate(-4deg);text-transform:uppercase
+}
+
+/* ---------- controls ---------- */
+.tools{display:flex;gap:8px;margin:18px 0 10px}
+.search{
+  flex:1;display:flex;align-items:center;gap:9px;background:var(--surface);
+  border:1px solid var(--line);border-radius:11px;padding:0 12px
+}
+.search svg{flex:none;opacity:.55}
+.search input{
+  flex:1;background:none;border:0;outline:0;color:var(--paper);
+  font-family:var(--body);font-size:15px;padding:11px 0;min-width:0
+}
+.search input::placeholder{color:var(--dim)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:none;background:var(--surface);border:1px solid var(--line);color:var(--dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.8px;text-transform:uppercase;
+  padding:7px 12px;border-radius:99px;cursor:pointer;transition:.16s
+}
+.chip[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:700}
+
+/* ---------- module + cards ---------- */
+.mod{margin:26px 0 12px;display:flex;align-items:baseline;gap:10px}
+.mod .n{
+  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);
+  letter-spacing:1.2px;flex:none
+}
+.mod h2{font-family:var(--disp);font-weight:700;font-size:17px;margin:0;letter-spacing:-.2px}
+.mod .rule{flex:1;height:1px;background:var(--line)}
+
+.card{
+  position:relative;background:var(--paper);color:var(--ink);
+  border-radius:var(--r);margin-bottom:12px;overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.34);
+  transition:transform .16s ease, box-shadow .16s ease;
+  animation:rise .42s cubic-bezier(.2,.7,.3,1) backwards
+}
+/* fibre du papier thermique */
+.card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.028) 0 1px,transparent 1px 3px)
+}
+.card:nth-child(2){animation-delay:.03s}
+.card:nth-child(3){animation-delay:.06s}
+.card:nth-child(4){animation-delay:.09s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes punch{0%{transform:scale(1)}40%{transform:scale(.975) rotate(-.4deg)}100%{transform:scale(1)}}
+.card.just{animation:punch .3s ease}
+.card.done{background:var(--paper-2)}
+.card.done .c-title{opacity:.5;text-decoration:line-through}
+.card-in{padding:14px 15px 12px}
+.c-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+.tag{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:1.1px;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;background:#DAD4C8;color:var(--ink-soft);font-weight:700
+}
+.tag.free{background:#CDEFE4;color:#0E6B55}
+.tag.paid{background:#FBE0BB;color:#7A4A05}
+.tag.fr{background:#D8E2F5;color:#243D6B}
+.c-title{font-family:var(--disp);font-weight:700;font-size:16.5px;line-height:1.25;margin:0 0 5px;letter-spacing:-.2px}
+.c-desc{font-size:13.5px;line-height:1.45;color:var(--ink-soft);margin:0}
+.c-note{
+  margin-top:10px;width:100%;background:#F6F3ED;border:1px dashed #C9C3B8;border-radius:8px;
+  color:var(--ink);font-family:var(--body);font-size:13px;padding:8px 10px;resize:vertical;
+  min-height:38px;outline:none
+}
+.c-note:focus{border-color:var(--amber);border-style:solid}
+.c-act{
+  display:flex;border-top:2px dashed #C9C3B8;background:#E4DFD5
+}
+.c-act button,.c-act a{
+  flex:1;border:0;background:none;padding:12px 8px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:1.1px;text-transform:uppercase;
+  font-weight:700;color:var(--ink-soft);text-decoration:none;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s
+}
+.c-act > * + *{border-left:2px dashed #C9C3B8}
+.c-act .go{flex:1.6;background:var(--ink);color:var(--paper)}
+.c-act .go:active{background:#000}
+.c-act button:active{background:#D6D0C4}
+.card.done .c-act .tick{color:var(--teal)}
+.card .star.on{color:var(--stamp)}
+
+/* ---------- panels ---------- */
+.panel{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px;margin-bottom:14px
+}
+.panel h3{font-family:var(--disp);font-weight:700;font-size:16px;margin:0 0 4px}
+.panel p.hint{font-size:13px;color:var(--dim);margin:0 0 14px}
+.field{margin-bottom:12px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.field input[type=range]{width:100%;accent-color:var(--amber)}
+.field .val{font-family:var(--disp);font-weight:700;font-size:19px;color:var(--paper)}
+.result{border-top:1px solid var(--line);margin-top:6px;padding-top:14px}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:14px}
+.row span{color:var(--dim)}
+.row b{font-family:var(--mono);font-weight:700}
+.row.big b{font-family:var(--disp);font-size:22px}
+.pos{color:var(--teal)}.neg{color:var(--stamp)}
+.verdict{
+  margin-top:12px;font-size:13.5px;line-height:1.5;padding:11px 12px;border-radius:9px;
+  background:var(--night-2);border-left:3px solid var(--amber)
+}
+
+/* ---------- kit list ---------- */
+.kit{list-style:none;margin:0;padding:0}
+.kit li{
+  display:flex;align-items:center;gap:11px;padding:11px 0;
+  border-bottom:1px solid var(--line);cursor:pointer
+}
+.kit li:last-child{border-bottom:0}
+.box{
+  width:21px;height:21px;flex:none;border-radius:6px;border:2px solid var(--line);
+  display:grid;place-items:center;transition:.15s
+}
+.kit li[aria-checked="true"] .box{background:var(--teal);border-color:var(--teal)}
+.kit li[aria-checked="true"] .kname{opacity:.45;text-decoration:line-through}
+.kname{flex:1;font-size:14.5px;line-height:1.3}
+.kname em{display:block;font-style:normal;font-size:11.5px;color:var(--dim);margin-top:2px}
+.kprice{font-family:var(--mono);font-size:11.5px;color:var(--amber);white-space:nowrap}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:rgba(16,21,31,.96);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom);
+  display:flex
+}
+.nav button{
+  flex:1;background:none;border:0;padding:9px 4px 10px;cursor:pointer;color:var(--dim);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.9px;text-transform:uppercase
+}
+.nav button svg{width:21px;height:21px}
+.nav button[aria-current="true"]{color:var(--amber)}
+.nav button[aria-current="true"] svg{stroke:var(--amber)}
+
+.empty{text-align:center;color:var(--dim);font-size:14px;padding:44px 20px}
+.foot{color:var(--dim);font-size:11.5px;line-height:1.6;text-align:center;padding:26px 4px 10px;font-family:var(--mono)}
+.foot a{color:var(--dim)}
+.linkrow{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.linkrow button{
+  background:var(--surface);border:1px solid var(--line);color:var(--dim);
+  font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  padding:8px 13px;border-radius:99px;cursor:pointer
+}
+.toast{
+  position:fixed;left:50%;bottom:calc(var(--nav-h) + 18px);transform:translate(-50%,20px);
+  background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:12px;
+  padding:10px 16px;border-radius:99px;z-index:60;opacity:0;pointer-events:none;
+  transition:.25s;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:88vw;text-align:center
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#install{display:none;width:100%;margin:2px 0 16px;background:var(--amber);color:var(--ink);
+  border:0;border-radius:11px;padding:14px;font-family:var(--disp);font-weight:700;font-size:15px;cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="mark">WZ</div>
+    <div class="brand">
+      <b>WiFi Zone OS</b>
+      <span id="sub">Douala · Parcours opérateur</span>
+    </div>
+    <div class="sigbars" id="sig" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <button id="install">Installer sur mon téléphone</button>
+  <div id="view"></div>
+  <div class="foot">
+    Données stockées uniquement sur cet appareil.
+    <div class="linkrow">
+      <button id="exp">Exporter</button>
+      <button id="imp">Importer</button>
+      <button id="rst">Réinitialiser</button>
+    </div>
+  </div>
+</main>
+
+<nav class="nav" id="nav"></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =============== DONNÉES =============== */
+const MODULES = [
+  {n:"01", t:"Comprendre le montage"},
+  {n:"02", t:"Starlink & mode Bypass"},
+  {n:"03", t:"Bases MikroTik & Winbox"},
+  {n:"04", t:"Hotspot / portail captif"},
+  {n:"05", t:"Générer & vendre les tickets"},
+  {n:"06", t:"Piloter depuis PC et Android"},
+  {n:"07", t:"Paiement Mobile Money"}
+];
+
+const R = [
+  // ---- PARCOURS ----
+  {id:"p1", tab:"parcours", m:0, titre:"Formation MikroTik Routeur WiFi Zone",
+   src:"LINK COMMUNICATION · 106 vidéos", lang:"FR", cout:"Gratuit",
+   desc:"La formation gratuite la plus complète en français. À suivre en fond pendant tout le parcours.",
+   url:"https://www.youtube.com/playlist?list=PL-CftgTxoYKq1zCdLX9rHp_Yva2ZpKWwd"},
+
+  {id:"p2", tab:"parcours", m:1, titre:"How To Bypass The Starlink Router",
+   src:"YouTube", lang:"EN", cout:"Gratuit",
+   desc:"Désactiver le WiFi du routeur Starlink pour brancher ton MikroTik. Très visuel, se suit sans l'anglais.",
+   url:"https://www.youtube.com/watch?v=H21SRCdp8_g"},
+  {id:"p3", tab:"parcours", m:1, titre:"Contourner le routeur Starlink — guide écrit",
+   src:"StarlinkPulse", lang:"FR", cout:"Gratuit",
+   desc:"La même manipulation, expliquée en français. Pense à l'adaptateur Ethernet, vendu séparément.",
+   url:"https://starlinkpulse.com/comment-contourner-le-routeur-starlink/"},
+
+  {id:"p4", tab:"parcours", m:2, titre:"Présentation du HOTSPOT MikroTik",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"Winbox, adressage IP, DHCP client sur le port WAN. La base avant de toucher au hotspot.",
+   url:"https://www.youtube.com/watch?v=0_DoSlvEoFo"},
+
+  {id:"p5", tab:"parcours", m:3, titre:"Configurer un HOTSPOT WiFi Zone",
+   src:"Dade Academy", lang:"FR", cout:"Gratuit",
+   desc:"Le portail captif de bout en bout : la page qui s'ouvre quand le client se connecte.",
+   url:"https://www.youtube.com/watch?v=KTVBQqh6DWA"},
+  {id:"p6", tab:"parcours", m:3, titre:"Configuration MikroTik RB951 pour WiFi Zone",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"Refaire la config sur un routeur d'entrée de gamme, utile si tu démarres avec du matériel d'occasion.",
+   url:"https://www.youtube.com/watch?v=BXqaQd2Fzxs"},
+
+  {id:"p7", tab:"parcours", m:4, titre:"Créer des tickets WiFi Zone avec Mikhmon",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"Le cœur du business : générer, imprimer et vendre les codes de connexion.",
+   url:"https://www.youtube.com/watch?v=JFKztku2xCg"},
+  {id:"p8", tab:"parcours", m:4, titre:"Userman — templates de tickets personnalisés",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"Mettre ton logo, un QR code et ton numéro sur chaque ticket. Ça change la perception du service.",
+   url:"https://www.youtube.com/watch?v=tMSUMFXA8lA"},
+
+  {id:"p9", tab:"parcours", m:5, titre:"Auto-Setup MikroTik Hotspot avec Mikhmon",
+   src:"YouTube", lang:"EN", cout:"Gratuit",
+   desc:"Installer Mikhmon sur ton PC Windows, puis piloter la zone depuis MikhApp sur Android.",
+   url:"https://www.youtube.com/watch?v=5iot2Nfpca4"},
+
+  {id:"p10", tab:"parcours", m:6, titre:"Paiement des tickets via Mobile Money — partie 1",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"Le client paie par MoMo et reçoit son code automatiquement, même quand tu n'es pas sur place.",
+   url:"https://www.youtube.com/watch?v=Xf16jAw4VYQ"},
+  {id:"p11", tab:"parcours", m:6, titre:"Paiement Mobile Money — partie 3",
+   src:"YouTube", lang:"FR", cout:"Gratuit",
+   desc:"La suite de l'intégration. À faire une fois que la vente manuelle tourne déjà.",
+   url:"https://www.youtube.com/watch?v=eOx-HXjHE4g"},
+
+  // ---- CERTIFICATIONS ----
+  {id:"c1", tab:"certif", titre:"MTCNA gratuit en ligne",
+   src:"Wireless NetWare", lang:"EN", cout:"Gratuit",
+   desc:"Le cours MTCNA complet, gratuit, à ton rythme. Commence ici : tu ne payes que l'examen ensuite.",
+   url:"https://www.wirelessnetware.ca/free-online-mikrotik-mtcna-training-course/"},
+  {id:"c2", tab:"certif", titre:"Calendrier officiel des formations MikroTik",
+   src:"mikrotik.com", lang:"EN", cout:"Variable",
+   desc:"Trouve la session agréée la plus proche. Examen 25 questions, livre ouvert, 60 % pour passer.",
+   url:"https://mikrotik.com/training"},
+  {id:"c3", tab:"certif", titre:"Programme de certification MikroTik expliqué",
+   src:"TikTrain", lang:"EN", cout:"Gratuit",
+   desc:"MTCNA ouvre MTCRE, MTCWE, MTCUME… Sers-toi de cette page pour choisir ta suite.",
+   url:"https://tiktrain.com/mikrotik-certification-program/"},
+  {id:"c4", tab:"certif", titre:"Beyond Technologies — académie MikroTik",
+   src:"Côte d'Ivoire", lang:"FR", cout:"Payant",
+   desc:"Distributeur officiel MikroTik en Afrique de l'Ouest. Même certificat qu'aux USA, sans le billet d'avion.",
+   url:"https://beyondtechnologies.info/academie/"},
+  {id:"c5", tab:"certif", titre:"MTCNA — Baltic Networks",
+   src:"États-Unis", lang:"EN", cout:"Payant",
+   desc:"3 jours de labs pratiques, garantie de réussite à vie. Référence US si tu voyages un jour.",
+   url:"https://www.balticnetworks.com/products/mikrotik-certified-network-associate"},
+  {id:"c6", tab:"certif", titre:"MTCNA — Microcom Academy",
+   src:"États-Unis · 1 995 USD", lang:"EN", cout:"Payant",
+   desc:"À titre de comparaison : environ 1 200 000 FCFA hors voyage. Garde-le comme repère, pas comme plan.",
+   url:"https://www.microcom.us/trmtmtcna.html"},
+  {id:"c7", tab:"certif", titre:"Formations MikroTik — Azurtem",
+   src:"France", lang:"FR", cout:"Payant",
+   desc:"MTCNA, MTCWE, MTCRE, MTCINE en français. L'option européenne si tu obtiens un financement.",
+   url:"https://shop.azurtem.com/en/29-training"},
+  {id:"c8", tab:"certif", titre:"Administrateur d'infrastructures sécurisées",
+   src:"AFPA · France · à distance", lang:"FR", cout:"Payant",
+   desc:"Titre professionnel niveau 6. Utile seulement si ton objectif devient l'emploi salarié ou l'Europe.",
+   url:"https://www.afpa.fr/formation-qualifiante/formation-a-distance-administrateur-d-infrastructures-securisees"},
+  {id:"c9", tab:"certif", titre:"Cisco Networking Academy",
+   src:"Cisco · en ligne", lang:"FR", cout:"Gratuit",
+   desc:"Cours réseau gratuits et reconnus partout. Le complément généraliste du MTCNA.",
+   url:"https://www.netacad.com"},
+
+  // ---- BUSINESS ----
+  {id:"b1", tab:"business", titre:"easyWISP — formation et livre gratuits",
+   src:"easyWISP", lang:"EN", cout:"Gratuit",
+   desc:"Comment lancer et rentabiliser un service WiFi. Un module entier traite du backhaul satellite : ton cas.",
+   url:"https://www.easywisp.com/training.php"},
+  {id:"b2", tab:"business", titre:"WISP Training by Steve Discher",
+   src:"États-Unis", lang:"EN", cout:"Payant",
+   desc:"Formateur certifié MikroTik et Ubiquiti, auteur de RouterOS by Example.",
+   url:"https://mywisptraining.com/"},
+  {id:"b3", tab:"business", titre:"Starting a Basic Wireless ISP with MikroTik",
+   src:"Udemy", lang:"EN", cout:"Payant",
+   desc:"Beaucoup de labs. Prévoir 4 routeurs MikroTik pour tout refaire, ou suivre en observation.",
+   url:"https://www.udemy.com/course/starting-a-basic-wireless-isp-wisp-with-mikrotik/"},
+  {id:"b4", tab:"business", titre:"Hotspot WiFi Zone de A à Z avec MikroTik",
+   src:"MNA Academy", lang:"FR", cout:"Payant",
+   desc:"Hotspot, Mikhmon v7, tickets, antennes, paiements en ligne et liaisons radio. Cursus francophone complet.",
+   url:"https://mnaacademy.com/course/configuration-hotspot-wifi-zone-de-a-%C3%A0-z-avec-mikrotik-14"},
+  {id:"b5", tab:"business", titre:"Formation en ligne MikroTik — LINK Communication",
+   src:"Togo", lang:"FR", cout:"Payant",
+   desc:"La version encadrée et payante de la playlist gratuite du module 01.",
+   url:"https://linkctogo.com/formation-en-ligne-configuration-mikrotik"},
+  {id:"b6", tab:"business", titre:"WISPA — événements du secteur",
+   src:"États-Unis", lang:"EN", cout:"Payant",
+   desc:"Le réseau des opérateurs WiFi indépendants. À garder pour plus tard : présentiel aux USA, visa requis.",
+   url:"https://www.wispa.org/events/ispamerica-2026/"}
+];
+
+const KIT = [
+  {id:"k1", n:"Kit Starlink", d:"Antenne + routeur + alimentation", a:400000, b:650000},
+  {id:"k2", n:"Adaptateur Ethernet Starlink", d:"Indispensable pour le mode Bypass", a:25000, b:45000},
+  {id:"k3", n:"Routeur MikroTik", d:"hAP ax2 ou L009 — portail captif et tickets", a:70000, b:110000},
+  {id:"k4", n:"Point d'accès extérieur", d:"Sur mât — porte à 80-150 m", a:60000, b:90000},
+  {id:"k5", n:"Régulateur de tension", d:"Vital à Douala : protège le moteur de l'antenne", a:25000, b:45000},
+  {id:"k6", n:"Parafoudre + mise à la terre", d:"Saison des pluies", a:15000, b:30000},
+  {id:"k7", n:"Onduleur + batterie 100 Ah", d:"Tenir pendant les coupures", a:150000, b:250000},
+  {id:"k8", n:"Mât galvanisé 6 m + haubans", d:"La hauteur fait la portée", a:30000, b:60000},
+  {id:"k9", n:"Câble Cat6 extérieur 100 m", d:"Plus connecteurs et injecteur PoE", a:25000, b:40000},
+  {id:"k10", n:"Imprimante thermique Bluetooth", d:"58 mm — impression des tickets", a:20000, b:35000},
+  {id:"k11", n:"Installation sur site", d:"Pose et alignement de l'antenne", a:20000, b:20000}
+];
+
+/* =============== ÉTAT =============== */
+const KEY="wifizone-os-v1";
+let S={done:{},fav:{},note:{},kit:{},calc:{t:40,p:200,ab:65000,ch:15000}};
+let mem={};
+function load(){
+  try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}
+  catch(e){ if(mem[KEY]) S=Object.assign(S,mem[KEY]); }
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S));}
+  catch(e){ mem[KEY]=S; }
+}
+load();
+
+let tab="parcours", q="", filt=new Set(), justId=null;
+
+/* =============== OUTILS =============== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fcfa=n=>n.toLocaleString("fr-FR").replace(/\u202f|\u00a0/g," ")+" F";
+let tt;
+function toast(m){const e=$("#toast");e.textContent=m;e.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("show"),2100);}
+
+const ICONS={
+  parcours:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  certif:'<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5"/>',
+  business:'<path d="M3 20h18M6 20V10M12 20V4M18 20v-7"/>',
+  materiel:'<path d="M3 8h18v10H3z"/><path d="M7 8V5h10v3M7 13h4"/>'
+};
+const TABS=[["parcours","Parcours"],["certif","Certifs"],["business","Business"],["materiel","Matériel"]];
+
+/* =============== RENDU =============== */
+function totalSteps(){return R.length;}
+function doneCount(){return R.filter(r=>S.done[r.id]).length;}
+
+function heroHTML(){
+  const d=doneCount(), t=totalSteps(), pc=Math.round(d/t*100);
+  return `<section class="hero"><div class="stub">
+    <div class="stub-top">
+      <div>
+        <div class="eyebrow">Ticket n° 001 · Douala</div>
+        <h1>Mon parcours<br>opérateur WiFi</h1>
+      </div>
+      <div class="count">${d}<small>/ ${t} validés</small></div>
+    </div>
+    <div class="meter"><i style="width:${pc}%"></i></div>
+    <div class="tear">
+      <div class="tear-row">
+        <div class="code">STARLINK · MIKROTIK · MIKHMON</div>
+        ${pc===100?'<div class="stamp">Terminé</div>':`<div class="code">${pc}%</div>`}
+      </div>
+    </div>
+  </div></section>`;
+}
+
+function cardHTML(r){
+  const done=!!S.done[r.id], fav=!!S.fav[r.id];
+  const coutCls = r.cout==="Gratuit"?"free":(r.cout==="Payant"?"paid":"");
+  return `<article class="card ${done?"done":""} ${justId===r.id?"just":""}" data-id="${r.id}">
+    <div class="card-in">
+      <div class="c-meta">
+        <span class="tag ${coutCls}">${esc(r.cout)}</span>
+        <span class="tag ${r.lang==="FR"?"fr":""}">${esc(r.lang)}</span>
+        <span class="tag">${esc(r.src)}</span>
+      </div>
+      <h3 class="c-title">${esc(r.titre)}</h3>
+      <p class="c-desc">${esc(r.desc)}</p>
+      <textarea class="c-note" data-note="${r.id}" rows="1"
+        placeholder="Ma note sur cette formation…">${esc(S.note[r.id]||"")}</textarea>
+    </div>
+    <div class="c-act">
+      <a class="go" href="${r.url}" target="_blank" rel="noopener">Ouvrir ▸</a>
+      <button class="tick" data-tick="${r.id}">${done?"✓ Validé":"Valider"}</button>
+      <button class="star ${fav?"on":""}" data-star="${r.id}">${fav?"★":"☆"}</button>
+    </div>
+  </article>`;
+}
+
+function match(r){
+  if(q){
+    const h=(r.titre+" "+r.desc+" "+r.src).toLowerCase();
+    if(!h.includes(q.toLowerCase())) return false;
+  }
+  if(filt.has("fav") && !S.fav[r.id]) return false;
+  if(filt.has("todo") && S.done[r.id]) return false;
+  if(filt.has("gratuit") && r.cout!=="Gratuit") return false;
+  if(filt.has("fr") && r.lang!=="FR") return false;
+  return true;
+}
+
+function toolsHTML(){
+  const chips=[["gratuit","Gratuit"],["fr","Français"],["todo","À faire"],["fav","Épinglés"]];
+  return `<div class="tools"><div class="search">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Chercher une formation…" value="${esc(q)}">
+    </div></div>
+    <div class="chips">${chips.map(([k,l])=>
+      `<button class="chip" data-f="${k}" aria-pressed="${filt.has(k)}">${l}</button>`).join("")}</div>`;
+}
+
+function listParcours(){
+  let h=heroHTML()+toolsHTML(), any=false;
+  MODULES.forEach((m,i)=>{
+    const items=R.filter(r=>r.tab==="parcours"&&r.m===i&&match(r));
+    if(!items.length) return;
+    any=true;
+    h+=`<div class="mod"><span class="n">${m.n}</span><h2>${esc(m.t)}</h2><span class="rule"></span></div>`;
+    h+=items.map(cardHTML).join("");
+  });
+  if(!any) h+=`<p class="empty">Aucune formation ne correspond.<br>Retire un filtre pour élargir.</p>`;
+  return h;
+}
+
+function listSimple(kind,title,intro){
+  const items=R.filter(r=>r.tab===kind&&match(r));
+  let h=`<div class="mod"><span class="n">▸</span><h2>${title}</h2><span class="rule"></span></div>
+    <div class="panel"><p class="hint" style="margin:0">${intro}</p></div>`+toolsHTML();
+  h+= items.length? items.map(cardHTML).join("")
+    : `<p class="empty">Aucune formation ne correspond.<br>Retire un filtre pour élargir.</p>`;
+  return h;
+}
+
+function calcHTML(){
+  const c=S.calc;
+  const rev=c.t*c.p*30, cost=c.ab+c.ch, net=rev-cost;
+  const invest=KIT.reduce((s,k)=>s+(k.a+k.b)/2,0);
+  const mois=net>0?Math.ceil(invest/net):null;
+  let v;
+  if(net<=0) v="À ce rythme, tu ne couvres même pas l'abonnement. Il faut soit plus de passage, soit un meilleur emplacement.";
+  else if(net<60000) v="Ça tourne, mais le bénéfice reste faible. Vise un carrefour, un marché ou un lycée.";
+  else if(mois && mois<=8) v=`Modèle sain : matériel remboursé en environ ${mois} mois. C'est le seuil à viser.`;
+  else v="Rentable, mais le remboursement du matériel prend du temps. Augmente le volume avant d'étendre la zone.";
+  return `<div class="panel">
+    <h3>Calculateur de rentabilité</h3>
+    <p class="hint">Bouge les curseurs et regarde si ton emplacement tient la route.</p>
+    <div class="field"><label>Tickets vendus par jour</label>
+      <div class="val" id="vt">${c.t}</div>
+      <input type="range" id="ct" min="5" max="150" step="1" value="${c.t}"></div>
+    <div class="field"><label>Prix moyen du ticket</label>
+      <div class="val" id="vp">${fcfa(c.p)}</div>
+      <input type="range" id="cp" min="50" max="1000" step="50" value="${c.p}"></div>
+    <div class="field"><label>Abonnement Starlink / mois</label>
+      <div class="val" id="va">${fcfa(c.ab)}</div>
+      <input type="range" id="ca" min="20000" max="120000" step="5000" value="${c.ab}"></div>
+    <div class="field"><label>Autres charges / mois</label>
+      <div class="val" id="vc">${fcfa(c.ch)}</div>
+      <input type="range" id="cc" min="0" max="80000" step="5000" value="${c.ch}"></div>
+    <div class="result">
+      <div class="row"><span>Recettes / mois</span><b>${fcfa(rev)}</b></div>
+      <div class="row"><span>Charges / mois</span><b>− ${fcfa(cost)}</b></div>
+      <div class="row big"><span>Bénéfice net</span><b class="${net>0?"pos":"neg"}">${fcfa(net)}</b></div>
+      <div class="verdict">${v}</div>
+    </div></div>`;
+}
+
+function kitHTML(){
+  const sel=KIT.filter(k=>S.kit[k.id]);
+  const a=sel.reduce((s,k)=>s+k.a,0), b=sel.reduce((s,k)=>s+k.b,0);
+  return `<div class="panel">
+    <h3>Budget de démarrage</h3>
+    <p class="hint">Coche ce que tu as déjà. Le total se met à jour.</p>
+    <div class="row big"><span>${sel.length}/${KIT.length} acquis</span>
+      <b>${sel.length?fcfa(a)+" – "+fcfa(b):"0 F"}</b></div>
+    <div class="verdict">Estimations pour Douala. Fais toujours établir trois devis réels avant d'acheter :
+      l'écart entre boutiques est important.</div>
+  </div>
+  <div class="panel"><ul class="kit">${KIT.map(k=>`
+    <li data-kit="${k.id}" aria-checked="${!!S.kit[k.id]}" role="checkbox" tabindex="0">
+      <span class="box">${S.kit[k.id]?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10151F" stroke-width="4"><path d="m4 12 6 6L20 6"/></svg>':""}</span>
+      <span class="kname">${esc(k.n)}<em>${esc(k.d)}</em></span>
+      <span class="kprice">${(k.a/1000)}–${(k.b/1000)}k</span>
+    </li>`).join("")}</ul></div>`;
+}
+
+function listMateriel(){
+  return `<div class="mod"><span class="n">▸</span><h2>Matériel & rentabilité</h2><span class="rule"></span></div>`
+    + calcHTML() + kitHTML();
+}
+
+function render(){
+  const v=$("#view");
+  if(tab==="parcours") v.innerHTML=listParcours();
+  else if(tab==="certif") v.innerHTML=listSimple("certif","Certifications",
+    "Le MTCNA est la certification qui compte dans ce métier. Apprends gratuitement, ne paye que l'examen.");
+  else if(tab==="business") v.innerHTML=listSimple("business","Le côté business",
+    "La technique fait tourner la zone ; c'est le business qui la rend rentable.");
+  else v.innerHTML=listMateriel();
+
+  const d=doneCount(), t=totalSteps();
+  document.querySelectorAll("#sig i").forEach((b,i)=>b.classList.toggle("on", d/t > i/4));
+  $("#sub").textContent = tab==="materiel" ? "Douala · Budget & rentabilité" : `Douala · ${d}/${t} validés`;
+
+  $("#nav").innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" aria-current="${tab===k}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg>${l}</button>`).join("");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* =============== ÉVÉNEMENTS =============== */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-tab]");
+  if(t){ tab=t.dataset.tab; q=""; render(); return; }
+
+  const tk=e.target.closest("[data-tick]");
+  if(tk){ const id=tk.dataset.tick; S.done[id]=!S.done[id]; save();
+    toast(S.done[id]?"Étape validée":"Étape rouverte"); justId=id; render();
+    setTimeout(()=>{justId=null;},400); return; }
+
+  const st=e.target.closest("[data-star]");
+  if(st){ const id=st.dataset.star; S.fav[id]=!S.fav[id]; save(); render(); return; }
+
+  const f=e.target.closest("[data-f]");
+  if(f){ const k=f.dataset.f; filt.has(k)?filt.delete(k):filt.add(k); render(); return; }
+
+  const k=e.target.closest("[data-kit]");
+  if(k){ const id=k.dataset.kit; S.kit[id]=!S.kit[id]; save(); render(); return; }
+});
+
+document.addEventListener("keydown",e=>{
+  if((e.key===" "||e.key==="Enter") && e.target.matches("[data-kit]")){ e.preventDefault(); e.target.click(); }
+});
+
+document.addEventListener("input",e=>{
+  if(e.target.id==="q"){ q=e.target.value; const p=e.target.selectionStart; render();
+    const n=$("#q"); if(n){ n.focus(); n.setSelectionRange(p,p);} return; }
+  const nt=e.target.dataset && e.target.dataset.note;
+  if(nt){ S.note[nt]=e.target.value; save(); return; }
+  const map={ct:["t","vt",v=>v],cp:["p","vp",fcfa],ca:["ab","va",fcfa],cc:["ch","vc",fcfa]};
+  if(map[e.target.id]){
+    const [key,out,fmt]=map[e.target.id];
+    S.calc[key]=+e.target.value; save();
+    $("#"+out).textContent=fmt(S.calc[key]);
+    const c=S.calc, rev=c.t*c.p*30, cost=c.ab+c.ch;
+    const rows=document.querySelectorAll(".result .row b");
+    if(rows.length===3){
+      rows[0].textContent=fcfa(rev);
+      rows[1].textContent="− "+fcfa(cost);
+      rows[2].textContent=fcfa(rev-cost);
+      rows[2].className=(rev-cost)>0?"pos":"neg";
+    }
+  }
+});
+
+/* export / import / reset */
+$("#exp").onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="wifizone-progression.json"; a.click();
+  toast("Progression exportée");
+};
+$("#imp").onclick=()=>{
+  const i=document.createElement("input"); i.type="file"; i.accept="application/json";
+  i.onchange=()=>{const f=i.files[0]; if(!f) return; const r=new FileReader();
+    r.onload=()=>{ try{ S=Object.assign(S,JSON.parse(r.result)); save(); render(); toast("Progression restaurée"); }
+      catch(err){ toast("Fichier illisible"); } };
+    r.readAsText(f);};
+  i.click();
+};
+$("#rst").onclick=()=>{
+  if(!confirm("Effacer toute ta progression, tes notes et ton budget ?")) return;
+  S={done:{},fav:{},note:{},kit:{},calc:{t:40,p:200,ab:65000,ch:15000}};
+  save(); render(); toast("Tout est remis à zéro");
+};
+
+/* installation PWA */
+let deferred;
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault(); deferred=e; $("#install").style.display="block";
+});
+$("#install").onclick=async()=>{
+  if(!deferred) return;
+  deferred.prompt(); await deferred.userChoice;
+  deferred=null; $("#install").style.display="none";
+};
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+
+render();
+</script>
+</body>
+</html>
